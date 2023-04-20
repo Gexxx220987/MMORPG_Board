@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Объявление: {{ post.title }}
+{% endblock %}
+
+{% block content %}
+    <h1>{{ post.title }}</h1>
+    <p><b>Автор:</b> {{ post.author }}</p>
+    <p><b>Дата публикации:</b> {{ post.created_at }}</p>
+    <p><b>Категория:</b> {{ post.category }}</p>
+    <p>{{ post.content|safe }}</p>
+
+    {% if user == post.author %}
+    <a href="{% url 'board:post_edit' post.pk %}" class="btn btn-primary btn-block">Редактировать</a>
+{% elif user.is_authenticated %}
+    <hr>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary btn-block">Сохранить</button>
+    </form>
+
+    {% if replies %}
+        <br>
+        <h4 class="mt-4">Ваши отклики на это объявление:</h4>
+        <div class="table-responsive">
+            <table class="table table-striped mt-2">
+                <thead>
+                    <tr>
+                        <th scope="col">Отклик</th>
+                        <th scope="col">Статус</th>
+                        <th scope="col">Написан</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for reply in replies %}
+                    <tr>
+                        <td>{{ reply.text }}</td>
+                        <td>{{ reply.get_status_display }}</td>
+                        <td>{{ reply.created_at|date:'d.m.Y' }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+{% endif %}
+
+{% endblock %}

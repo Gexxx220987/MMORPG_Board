@@ -1,0 +1,19 @@
+{% if page_obj.has_other_pages %}
+    <div class="pegination">
+        <div class="nav-links">
+            {% if page_obj.number > 2 %}
+                <a class="page-numbers" href="?{{ s }}page=1"><</a>
+            {% endif %}
+            {% for p in page_obj.paginator.page_range %}
+                {% if p == page_obj.number %}
+                    <a class="page-numbers current" href="?{{ s }}page={{ p }}">{{ p }}</a>
+                {% elif page_obj.number|add:'-2' < p and page_obj.number|add:'2' > p %}
+                    <a class="page-numbers" href="?{{ s }}page={{ p }}">{{ p }}</a>
+                {% endif %}
+            {% endfor %}
+            {% if page_obj.number < page_obj.paginator.num_pages|add:'-1' %}
+                <a class="page-numbers" href="?{{ s }}page={{ page_obj.paginator.num_pages }}">></a>
+            {% endif %}
+        </div>
+    </div>
+{% endif %}

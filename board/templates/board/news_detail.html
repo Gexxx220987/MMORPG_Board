@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Новость: {{ news.title }}
+{% endblock %}
+
+{% block content %}
+    <h1>{{ news.title }}</h1>
+    <p><b>Автор:</b> {{ news.author }}</p>
+    <p><b>Дата публикации:</b> {{ news.created_at }}</p>
+    <p>{{ news.content|safe }}</p>
+{% endblock %}

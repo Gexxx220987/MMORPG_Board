@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Рассылка новостей</title>
+</head>
+<body>
+{% for news in news_list %}
+    <div class="card mb-3">
+        <div class="card-body">
+            <h4 class="card-title">Новость {{ news.pk }}</h4>
+            <h3>{{ news }}</h3>
+            <h5>{{ news.created_at|date:'M d Y' }}</h5>
+            <br>
+            <p class="card-text"><em>{{ news.text }}</em></p>
+            <a href="{{ request.META.HTTP_HOST }}{{ news.get_absolute_url }}" class="btn btn-primary">Для просмотра полной новости пройдите по ссылке</a>
+        </div>
+    </div>
+{% endfor %}
+</body>
+</html>

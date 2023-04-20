@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Список новостей
+{% endblock %}
+
+{% block content %}
+    <h4>Новости</h4>
+    <h6>показано {{ news_list|length }} из {{ paginator.count }}</h6>
+    <hr>
+    {% if news_list %}
+        <center>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Новость</th>
+                        <th scope="col">Автор</th>
+                        <th scope="col">Опубликовано</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for news in news_list %}
+                        <tr>
+                            <td><a href="{% url 'board:news_detail' news.pk %}">{{ news.title }}</a></td>
+                            <td>{{ news.author }}</td>
+                            <td>{{ news.created_at|date:'M d Y' }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </center>
+    {% else %}
+        <h6>Новости отсутствуют.</h6>
+    {% endif %}
+
+    <hr>
+    {% include 'includes/_pagination.html' %}
+{% endblock %}

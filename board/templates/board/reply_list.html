@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Отклики
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h4 class="my-4">Отклики на мои объявления</h4>
+        <div class="row mb-3">
+            <div class="col-6">
+                <p class="text-muted">Показано {{ replies|length }} из {{ paginator.count }}</p>
+            </div>
+        </div>
+        <hr>
+
+        {% if replies %}
+            <table class="table table-hover table-sm">
+                <thead>
+                <tr>
+                    <th>Объявление</th>
+                    <th>Категория</th>
+                    <th>Опубликовано</th>
+                    <th>Отклик</th>
+                    <th>Статус</th>
+                    <th>Автор</th>
+                    <th>Отправлен</th>
+                    <th>Действие</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for reply in replies %}
+                    <tr>
+                        <td><a href="/board/posts/{{ reply.post.id }}">{{ reply.post }}</a></td>
+                        <td>{{ reply.post.category }}</td>
+                        <td>{{ reply.post.created_at|date:'m.d.Y' }}</td>
+                        <td>{{ reply }}</td>
+                        <td>{{ reply.get_status_display }}</td>
+                        <td>{{ reply.author }}</td>
+                        <td>{{ reply.created_at|date:'m.d.Y' }}</td>
+                        <td>
+                            {% if reply.status == 'C' %}
+                                <form method="post">
+                                    {% csrf_token %}
+                                    {{ form.as_p }}
+                                    <input type="hidden" name="pk" id="pk" value={{ reply.pk }}>
+                                    <input type="submit" class="btn btn-success btn-sm" name="accept" value="Принять"/>
+                                    <input type="submit" class="btn btn-danger btn-sm" name="reject" value="Отклонить"/>
+                                </form>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p class="text-muted">Нет откликов</p>
+        {% endif %}
+
+        {% include 'includes/_pagination.html' %}
+
+        <hr>
+
+        <form method="get">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="post_id">Выберите объявление:</label>
+                <select class="form-control" id="post_id" name="post_id">
+                    <option value="">Все объявления</option>
+                    {% for post in user.posts.all %}
+                        <option value="{{ post.pk }}"
+                                {{ selected_post_id }}
+                                {% if selected_post_id == post.pk %}selected{% endif %}>{{ post }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            {{ form.as_p }}
+            <div class="text-right">
+                <input type="submit" class="btn btn-primary" value="Найти"/>
+            </div>
+        </form>
+    </div>
+{% endblock content %}
+

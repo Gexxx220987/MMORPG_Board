@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Профиль пользователя {{ user }}
+{% endblock %}
+
+{% block content %}
+    <h4>Профиль {{ user }}</h4>
+    <hr>
+    <h6>Имя пользователя: {{ user }}</h6>
+    <h6>Email: {{ user.email }}</h6>
+
+    <br>
+    <a href="{% url 'board:post_create' %}">
+        <input type="submit" class="btn btn-primary btn-block" value="Написать объявление"/>
+    </a>
+{% endblock content %}

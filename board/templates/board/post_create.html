@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {% if is_edit %}
+        Редактирование поста
+    {% else %}
+        Создание поста
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-9 text-center">
+                <h1>
+                    {% if is_edit %}
+                        Редактирование поста
+                    {% else %}
+                        Создание поста
+                    {% endif %}
+                </h1>
+                <hr>
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <div class="mt-4 d-grid">
+                        <button type="submit" class="btn btn-primary btn-block">
+                            {% if is_edit %}
+                                Сохранить
+                            {% else %}
+                                Создать
+                            {% endif %}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

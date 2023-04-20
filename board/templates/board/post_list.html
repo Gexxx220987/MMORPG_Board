@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Список объявлений
+{% endblock %}
+
+{% block content %}
+    <h4>Объявления</h4>
+    <h6>показано {{ posts|length }} из {{ paginator.count }}</h6>
+    <hr>
+    {% if posts %}
+        <center>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Объявление</th>
+                        <th scope="col">Категория</th>
+                        <th scope="col">Автор</th>
+                        <th scope="col">Опубликовано</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for post in posts %}
+                        <tr>
+                            <td><a href="{% url 'board:post_detail' post.pk %}">{{ post.title }}</a></td>
+                            <td>{{ post.category }}</td>
+                            <td>{{ post.author }}</td>
+                            <td>{{ post.created_at|date:'M d Y' }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </center>
+    {% else %}
+        <h6>Объявления отсутствуют.</h6>
+    {% endif %}
+
+    <hr>
+    {% include 'includes/_pagination.html' %}
+{% endblock %}
